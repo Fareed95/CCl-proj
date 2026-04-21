@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secure File Share</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <main class="page-wrap">
+      <header class="hero">
+        <p class="eyebrow">Private Transfer Layer</p>
+        <h1>Send files securely with password lock</h1>
+        <p class="hero-copy">
+          Upload once, share with file ID, and control access using expiry and download limits.
+        </p>
+      </header>
+
+      <section class="layout">
+        <article class="card">
+          <h2>Upload Protected File</h2>
+          <p class="card-copy">Choose a file, set password, and generate a share link instantly.</p>
+          <form id="upload-form">
+            <label for="file">File</label>
+            <input type="file" id="file" name="file" required />
+
+            <label for="password">Password (min 8 chars)</label>
+            <input type="password" id="password" name="password" minlength="8" required />
+
+            <label for="expiryHours">Expiry in hours (optional)</label>
+            <input type="number" id="expiryHours" name="expiryHours" min="1" max="720" />
+
+            <label for="maxDownloads">Max downloads (optional)</label>
+            <input type="number" id="maxDownloads" name="maxDownloads" min="1" max="10000" />
+
+            <button type="submit">Upload Securely</button>
+          </form>
+          <section id="upload-result" class="result" aria-live="polite"></section>
+        </article>
+
+        <article class="card">
+          <h2>Unlock Shared File</h2>
+          <p class="card-copy">Enter file ID and password to receive a secure temporary download URL.</p>
+          <form id="access-form">
+            <label for="fileId">File ID</label>
+            <input type="text" id="fileId" name="fileId" required />
+
+            <label for="accessPassword">Password</label>
+            <input type="password" id="accessPassword" name="password" minlength="8" required />
+
+            <button type="submit">Unlock File</button>
+          </form>
+          <section id="access-result" class="result" aria-live="polite"></section>
+        </article>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

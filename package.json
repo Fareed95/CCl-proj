@@ -1,0 +1,29 @@
+{
+  "name": "secure-file-sharing-supabase",
+  "version": "1.0.0",
+  "description": "Secure password-protected file sharing with Supabase storage",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
+  },
+  "keywords": [
+    "supabase",
+    "file-sharing",
+    "express",
+    "bcrypt"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "multer": "^2.0.2",
+    "uuid": "^10.0.0",
+    "@supabase/supabase-js": "^2.45.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

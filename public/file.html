@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Access Shared File</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <main class="page-wrap">
+      <section class="layout single">
+        <article class="card">
+        <p class="eyebrow">Secure Access</p>
+        <h1>Access Shared File</h1>
+        <p id="file-id-view" class="card-copy"></p>
+        <form id="share-form">
+          <label for="share-password">Password</label>
+          <input type="password" id="share-password" minlength="8" required />
+          <button type="submit">Unlock File</button>
+        </form>
+        <section id="share-result" class="result" aria-live="polite"></section>
+      </article>
+      </section>
+    </main>
+
+    <script>
+      const fileId = window.location.pathname.split('/').pop();
+      document.getElementById('file-id-view').textContent = `File ID: ${fileId}`;
+      const output = document.getElementById('share-result');
+
+      const renderStatus = (type, heading, body, actionUrl) => {
+        output.className = `result result-${type}`;
+        output.innerHTML = `
+          <div class="result-title">${heading}</div>
+          <p class="result-copy">${body}</p>
+          ${actionUrl ? `<a class="result-link" href="${actionUrl}">Download now</a>` : ''}
+        `;
+      };
+
+      document.getElementById('share-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const password = document.getElementById('share-password').value;
+        renderStatus('info', 'Verifying', 'Checking password and file policy...');
+
+        try {
+          const response = await fetch('/api/access', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fileId, password })
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.error || 'Request failed');
+          }
+
+          renderStatus(
+            'success',
+            'Access granted',
+            `Your secure link is ready. It will expire in ${data.expiresInSeconds} seconds.`,
+            data.signedUrl
+          );
+          window.location.href = data.signedUrl;
+        } catch (error) {
+          renderStatus('error', 'Access denied', error.message);
+        }
+      });
+    </script>
+  </body>
+</html>
